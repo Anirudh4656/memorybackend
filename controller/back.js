@@ -6,7 +6,7 @@ export const getPosts=async(req,res)=>{
     try{
        
         console.log(page);
-        const LIMIT= 2; 
+        const LIMIT= 4; 
         //page is number but when it passes through query it becomes string 
         const startIndex=(Number(page)-1) *LIMIT;
         const total = await UserSchema.countDocuments({});
