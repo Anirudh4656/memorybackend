@@ -7,12 +7,13 @@ import auth from "../middleware/auth.js";
 
 
 router.get("/search",getPostsBySearch)
+// router.post("/",createPosts)
 router.post("/",auth,createPosts)
 router.get("/:id",getPost)
-router.get("/",getPosts)
-router.patch("/:id",updatePosts)
-router.delete("/:id",auth,deletePosts)
-router.patch("/:id/likePost",auth,likePost)
-router.post("/:id/commentPost",commentPost)
+router.get("/",getPosts);
+router.patch("/:id",auth,updatePosts);
+router.delete("/:id",auth,deletePosts);
+router.patch("/:id/likePost",auth,likePost);
+router.post("/:id/commentPost",auth,commentPost);
 
 export default router;

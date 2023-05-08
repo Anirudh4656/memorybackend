@@ -2,6 +2,8 @@ import mongoose from "mongoose"
 const userSchema = new mongoose.Schema({
 title:String,
 message:String,
+name:String,
+creator:String,
 tags:[String],
 selectedFile:String,
 likes:{

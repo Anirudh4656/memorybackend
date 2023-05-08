@@ -23,7 +23,7 @@ export const getPosts=async(req,res)=>{
 export const createPosts= async(req,res)=>{
     try{
          const post = req.body;
-         const newPost = new UserSchema(post);
+         const newPost = new UserSchema({...post, creator:req.userId,createdAt:new Date().toISOString()});
          await newPost.save();
          res.status(201).json(newPost)
     }catch(e){
@@ -35,12 +35,14 @@ export const createPosts= async(req,res)=>{
 
 export const updatePosts= async(req,res)=>{
    
-       try{  const {id:_id} =req.params;
+       try{  
+         const {id:_id} =req.params;
          const post = req.body
          if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("No post with that id")
          console.log(post)
          const updatedPost = await UserSchema.findByIdAndUpdate(_id,{...post,_id},{new:true})
-         res.json(updatedPost);}catch(e){
+         res.json(updatedPost);
+        }catch(e){
              console.log(e);
          }
 
@@ -59,13 +61,14 @@ export const deletePosts= async(req,res)=>{
 }
 export const likePost= async(req,res)=>{ 
    
-    const {id} =req.params;
-    console.log(req.userId);
+    const{id} =req.params;
+    console.log(`i am in like userid ${req.userId}`);
     if(!req.userId) return res.json({message:"Unauthenticated"})
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No post with that id");
     const post = await UserSchema.findById(id);
     const index = post.likes.findIndex((id)=>id===String(req.userId));
     if(index=== -1){
+      //see in mongodb how data is storing ;
     //like the post
     post.likes.push(req.userId);
     }else{
